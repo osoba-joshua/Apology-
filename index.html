@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person ❤️</title>
+    <style>
+        :root {
+            --anime-pink: #ffc2d1;
+            --soft-purple: #e2afff;
+            --deep-pink: #ff5c8a;
+            --text-dark: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--anime-pink), var(--soft-purple));
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Main Card Container */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            border: 4px solid white;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 { 
+            color: var(--deep-pink); 
+            font-size: 1.5rem; 
+            margin-top: 0;
+        }
+
+        .instruction {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        /* Bird Container inside the box */
+        .bird-nest {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px dashed var(--anime-pink);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .bird {
+            font-size: 2.2rem;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+        }
+
+        .bird:active {
+            transform: scale(0.8);
+        }
+
+        /* Heartfelt Message (Hidden by default) */
+        #message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 30px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .heartfelt-content {
+            max-width: 400px;
+        }
+
+        .heartfelt-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* Control Buttons */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+            height: 60px; /* Space for the runaway button */
+            position: relative;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background: var(--deep-pink);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 92, 138, 0.3);
+        }
+
+        #noBtn {
+            background: #f0f0f0;
+            color: #888;
+            position: absolute;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Floating Animation */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .float { animation: gentleFloat 3s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+
+    <div id="message-overlay">
+        <div class="heartfelt-content">
+            <h1>For My Favorite Girl ❤️</h1>
+            <p>
+                "I'm truly sorry for being such a bird-brain lately. 
+                I know I messed up, but you mean the world to me. 
+                I promise to make it up to you and keep your heart as happy as these birds! 
+                Can we please go back to being 'us'?"
+            </p>
+            <button onclick="closeMessage()" style="background: var(--soft-purple); color: white;">I Forgive You ✨</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h1>I'm So Sorry! 🕊️</h1>
+        <p class="instruction">Choose a bird to see your message:</p>
+        
+        <div class="bird-nest">
+            <span class="bird float" onclick="revealMessage()">🕊️</span>
+            <span class="bird float" style="animation-delay: 0.5s" onclick="revealMessage()">🐦</span>
+            <span class="bird float" style="animation-delay: 1s" onclick="revealMessage()">🐤</span>
+            <span class="bird float" style="animation-delay: 1.5s" onclick="revealMessage()">🦜</span>
+        </div>
+
+        <div class="btn-group">
+            <button id="yesBtn" onclick="revealMessage()">Yes</button>
+            <button id="noBtn" onmouseover="moveNoButton()" ontouchstart="moveNoButton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function moveNoButton() {
+            const btn = document.getElementById('noBtn');
+            
+            // Limit movement to within the visible screen area
+            const padding = 50;
+            const maxWidth = window.innerWidth - btn.offsetWidth - padding;
+            const maxHeight = window.innerHeight - btn.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxWidth));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxHeight));
+            
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function revealMessage() {
+            document.getElementById('message-overlay').style.display = 'flex';
+        }
+
+        function closeMessage() {
+            // After she clicks "I Forgive You", reset the site or show a "Yay" screen
+            document.getElementById('message-overlay').innerHTML = `
+                <div class="heartfelt-content">
+                    <h1>Yay! ❤️</h1>
+                    <p>I promise to be the best boyfriend ever starting right now!</p>
+                    <div style="font-size: 3rem;">🥰</div>
+                </div>
+            `;
+            setTimeout(() => {
+                document.getElementById('message-overlay').style.display = 'none';
+                location.reload(); // Optional: reset for fun
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
